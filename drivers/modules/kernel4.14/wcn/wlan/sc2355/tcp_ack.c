@@ -56,7 +56,7 @@ void sprdwl_tcp_ack_init(struct sprdwl_priv *priv)
 			    (unsigned long)ack_info);
 	}
 
-	atomic_set(&ack_m->enable, 1);
+	atomic_set(&ack_m->enable, 0);
 	ack_m->ack_winsize = MIN_WIN;
 }
 
@@ -533,7 +533,7 @@ void enable_tcp_ack_delay(char *buf, unsigned char offset)
 							 drop_msg);
 		}
 	} else {
-		atomic_set(&ack_m->enable, 1);
+		atomic_set(&ack_m->enable, 0);
 	}
 }
 

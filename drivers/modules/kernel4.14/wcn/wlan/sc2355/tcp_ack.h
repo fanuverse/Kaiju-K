@@ -20,7 +20,7 @@
 
 #define SPRDWL_TCP_ACK_NUM  32
 #define SPRDWL_TCP_ACK_EXIT_VAL		0x800
-#define SPRDWL_TCP_ACK_DROP_CNT		12
+#define SPRDWL_TCP_ACK_DROP_CNT		1
 
 #define SPRDWL_ACK_OLD_TIME	4000
 #define SPRDWL_U32_BEFORE(a, b)	((__s32)((__u32)a - (__u32)b) <= 0)

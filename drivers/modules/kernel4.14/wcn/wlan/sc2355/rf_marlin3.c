@@ -197,7 +197,7 @@ static struct nvm_name_table g_config_table[] = {
 	/*[SETCTION 11]misc:misc_t
 	 */
 	CF_TAB("DFS_switch", misc.dfs_switch, 1),
-	CF_TAB("power_save_switch", misc.power_save_switch, 1),
+	CF_TAB("power_save_switch", misc.power_save_switch, 0),
 	CF_TAB("ex-Fem_and_ex-LNA_param_setup", misc.fem_lan_param_setup, 1),
 	CF_TAB("rssi_report_diff", misc.rssi_report_diff, 1),
 

@@ -284,7 +284,7 @@
 
 int sysctl_tcp_min_tso_segs __read_mostly = 2;
 
-int sysctl_tcp_autocorking __read_mostly = 1;
+int sysctl_tcp_autocorking __read_mostly = 0;
 
 int sysctl_tcp_enable_nuke_addr __read_mostly = 1;
 
@@ -3571,11 +3571,11 @@ void __init tcp_init(void)
 	max_rshare = min(6UL*1024*1024, limit);
 
 	sysctl_tcp_wmem[0] = SK_MEM_QUANTUM;
-	sysctl_tcp_wmem[1] = 16*1024;
+	sysctl_tcp_wmem[1] = 64*1024;
 	sysctl_tcp_wmem[2] = max(64*1024, max_wshare);
 
 	sysctl_tcp_rmem[0] = SK_MEM_QUANTUM;
-	sysctl_tcp_rmem[1] = 87380;
+	sysctl_tcp_rmem[1] = 256*1024;
 	sysctl_tcp_rmem[2] = max(87380, max_rshare);
 
 	pr_info("Hash tables configured (established %u bind %u)\n",
