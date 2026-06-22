@@ -4068,6 +4068,28 @@ CONFIG_TRUSTY_VIRTIO_IPC=y
 #
 
 #
+# KernelSU
+#
+CONFIG_KSU=y
+CONFIG_KSU_FEATURE_ADBROOT=y
+# CONFIG_KSU_DEBUG is not set
+CONFIG_KPM=y
+
+#
+# KernelSU - SUSFS
+#
+# CONFIG_KSU_SUSFS is not set
+# CONFIG_KSU_SUSFS_SUS_PATH is not set
+# CONFIG_KSU_SUSFS_SUS_MOUNT is not set
+# CONFIG_KSU_SUSFS_SUS_KSTAT is not set
+# CONFIG_KSU_SUSFS_SPOOF_UNAME is not set
+# CONFIG_KSU_SUSFS_ENABLE_LOG is not set
+# CONFIG_KSU_SUSFS_HIDE_KSU_SUSFS_SYMBOLS is not set
+# CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG is not set
+# CONFIG_KSU_SUSFS_OPEN_REDIRECT is not set
+# CONFIG_KSU_SUSFS_SUS_MAP is not set
+
+#
 # Firmware Drivers
 #
 CONFIG_ARM_PSCI_FW=y
@@ -4772,9 +4794,3 @@ CONFIG_SBITMAP=y
 # KUnit support
 #
 # CONFIG_TEST is not set
-
-#ksu
-CONFIG_KSU=y
-
-# Required for KPM (Kernel Patch Module) support
-CONFIG_KPM=y

@@ -2636,40 +2636,14 @@ static int fts_proc_baseline_test_open(struct inode *inode, struct file *file)
 extern int fts_ex_mode_switch(enum _ex_mode mode, u8 value);
 
 static ssize_t fts_oplus_tp_direction_fops_write(struct file *file, const char *buf, size_t count, loff_t *pos)
-{
-	int ret = 0;
-	char buf_tmp[4] = {0};
+	{
+	/* Kaiju Gaming: Edge suppression permanently disabled */
 	struct fts_ts_data *ts_data = fts_data;
-
-	if (copy_from_user(buf_tmp, buf, count)) {
-		return -EFAULT;
-	}
-
-	FTS_TEST_INFO("%s: ap send %c.\n", __func__, buf_tmp[0]);
-	ret = sscanf(buf_tmp, "%d", &ts_data->oplus_edge_mode);
-	if (ret == 0) {
-		FTS_TEST_ERROR("%s: char to int fail.\n", __func__);
-	}
-
-	if (buf_tmp[0] == '0') {
-		fts_ex_mode_switch(MODE_EDGE, DISABLE);
-		FTS_TEST_INFO("%s: oplus_tp_direction disable\n", __func__);
-	} else if (buf_tmp[0] == '1') {
-		fts_ex_mode_switch(MODE_EDGE, 1);
-		FTS_TEST_INFO("%s: oplus_tp_direction enable, USB PORTS RIGHT\n", __func__);
-	} else if (buf_tmp[0] == '2') {
-		fts_ex_mode_switch(MODE_EDGE, 2);
-		FTS_TEST_INFO("%s: oplus_tp_direction enable, USB PORTS LEFT\n", __func__);
-	} else {
-		FTS_TEST_ERROR("%s: oplus_tp_direction wrong parameter .\n", __func__);
-		return -EINVAL;
-	}
-
-	FTS_TEST_INFO("edge mode:%d", ts_data->oplus_edge_mode);
-
+	fts_ex_mode_switch(MODE_EDGE, DISABLE);
+	ts_data->oplus_edge_mode = 0;
 	return count;
-
 }
+
 
 
 static ssize_t fts_oplus_tp_direction_fops_read(struct file *file, char __user *buffer, size_t size, loff_t *ppos)

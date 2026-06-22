@@ -389,36 +389,10 @@ static ssize_t fts_edge_mode_store(
 	struct device *dev,
 	struct device_attribute *attr, const char *buf, size_t count)
 {
-	int ret = 0;
+	/* Kaiju Gaming: Edge suppression permanently disabled */
 	struct fts_ts_data *ts_data = fts_data;
-
-	if (FTS_SYSFS_ECHO_ON(buf)) {
-		if (!ts_data->edge_mode) {
-			FTS_DEBUG("enter edge mode");
-			if (buf[0] == '1') /*USB PORTS RIGHT*/ {
-				ret = fts_ex_mode_switch(MODE_EDGE, 1);
-				if (ret >= 0) {
-					ts_data->edge_mode = 1;
-				}
-			}
-			else if (buf[0] == '2') /*USB PORTS LEFT*/ {
-				ret = fts_ex_mode_switch(MODE_EDGE, 2);
-				if (ret >= 0) {
-					ts_data->edge_mode = 2;
-				}
-			}
-		}
-	} else if (FTS_SYSFS_ECHO_OFF(buf)) {
-		if (ts_data->edge_mode) {
-			FTS_DEBUG("exit edge mode");
-			ret = fts_ex_mode_switch(MODE_EDGE, DISABLE);
-			if (ret >= 0) {
-				ts_data->edge_mode = DISABLE;
-			}
-		}
-	}
-
-	FTS_DEBUG("edge mode:%d", ts_data->edge_mode);
+	fts_write_reg(FTS_REG_EDGE_MODE_EN, 0);
+	ts_data->edge_mode = DISABLE;
 	return count;
 }
 
@@ -503,9 +477,9 @@ int fts_ex_mode_recovery(struct fts_ts_data *ts_data)
 			FTS_DEBUG("earphone mode:%d", ts_data->earphone_mode);
     }
 
-    if (ts_data->edge_mode) {
-        fts_ex_mode_switch(MODE_EDGE, ts_data->edge_mode);
-    }
+    /* Kaiju Gaming: Force disable edge suppression for claw grip */
+    ts_data->edge_mode = DISABLE;
+    fts_write_reg(FTS_REG_EDGE_MODE_EN, 0);
 
     return 0;
 }
@@ -519,6 +493,8 @@ int fts_ex_mode_init(struct fts_ts_data *ts_data)
     ts_data->charger_mode = DISABLE;
     ts_data->earphone_mode = DISABLE;
     ts_data->edge_mode = DISABLE;
+    /* Kaiju Gaming: Force edge suppression off */
+    fts_write_reg(FTS_REG_EDGE_MODE_EN, 0);
 
     ret = sysfs_create_group(&ts_data->dev->kobj, &fts_touch_mode_group);
     if (ret < 0) {
