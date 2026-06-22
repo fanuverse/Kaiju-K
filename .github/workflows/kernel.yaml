@@ -22,13 +22,13 @@ jobs:
       
       # Toolchain Paths
       CLANG_BASE: ${{ github.workspace }}/toolchains/android_prebuilts_clang_host_linux-x86_clang-6573524
-      GCC_64_BASE: ${{ github.workspace }}/toolchains/gcc-14.3
-      GCC_32_BASE: ${{ github.workspace }}/toolchains/gcc-14.3
+      GCC_64_BASE: ${{ github.workspace }}/toolchains/gcc-15.2
+      GCC_32_BASE: ${{ github.workspace }}/toolchains/gcc-15.2
 
       # Main Compiler and Cross-Compile Variables
       CC: "clang"
-      CROSS_COMPILE: "${{ github.workspace }}/toolchains/gcc-14.3/bin/aarch64-none-linux-gnu-"
-      CROSS_COMPILE_ARM32: "${{ github.workspace }}/toolchains/gcc-14.3/bin/arm-none-linux-gnueabihf-"
+      CROSS_COMPILE: "${{ github.workspace }}/toolchains/gcc-15.2/bin/aarch64-none-linux-gnu-"
+      CROSS_COMPILE_ARM32: "${{ github.workspace }}/toolchains/gcc-15.2/bin/arm-none-linux-gnueabihf-"
       
       # UNISOC Board-Specific Properties (used by Makefiles)
       BSP_BUILD_DT_OVERLAY: "y"
@@ -81,16 +81,16 @@ jobs:
           echo "--> Downloading Clang..."
           git clone https://github.com/crdroidandroid/android_prebuilts_clang_host_linux-x86_clang-6573524.git
           
-          echo "--> Downloading GCC 14.3 (64-bit and 32-bit)..."
-          mkdir -p gcc-14.3
+          echo "--> Downloading GCC 15.2 (64-bit and 32-bit)..."
+          mkdir -p gcc-15.2
           # Download 64-bit (aarch64)
           wget -q https://developer.arm.com/-/media/Files/downloads/gnu/15.2.rel1/binrel/arm-gnu-toolchain-15.2.rel1-x86_64-aarch64-none-linux-gnu.tar.xz -O gcc64.tar.xz
           # Download 32-bit (arm)
           wget -q https://developer.arm.com/-/media/Files/downloads/gnu/15.2.rel1/binrel/arm-gnu-toolchain-15.2.rel1-x86_64-arm-none-linux-gnueabihf.tar.xz -O gcc32.tar.xz
           
           echo "--> Extracting GCC..."
-          tar -xf gcc64.tar.xz -C gcc-14.3 --strip-components=1
-          tar -xf gcc32.tar.xz -C gcc-14.3 --strip-components=1
+          tar -xf gcc64.tar.xz -C gcc-15.2 --strip-components=1
+          tar -xf gcc32.tar.xz -C gcc-15.2 --strip-components=1
           rm gcc64.tar.xz gcc32.tar.xz
 
           echo "--> Setting permissions..."
