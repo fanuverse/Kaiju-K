@@ -4773,5 +4773,8 @@ CONFIG_SBITMAP=y
 #
 # CONFIG_TEST is not set
 
+#ksu
+CONFIG_KSU=y
+
 # Required for KPM (Kernel Patch Module) support
 CONFIG_KPM=y
