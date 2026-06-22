@@ -54,6 +54,7 @@
 #include <linux/headset_notifier.h>
 #include <linux/tp_usb_notifier.h>
 
+#include <linux/cpufreq.h>
 #include "focaltech_core.h"
 #include "../touch.h"
 
@@ -731,6 +732,31 @@ static void fts_irq_read_report(void)
 #endif
 }
 
+/* === Kaiju Gaming: Touch CPU Boost === */
+static struct delayed_work fts_boost_rel_work;
+static bool fts_boosted;
+
+static void fts_boost_rel_func(struct work_struct *w) { fts_boosted = false; }
+
+static void fts_do_boost(void)
+{
+	struct cpufreq_policy *pol;
+	int cpu;
+	if (!fts_boosted) {
+		for_each_online_cpu(cpu) {
+			pol = cpufreq_cpu_get(cpu);
+			if (pol) {
+				cpufreq_driver_target(pol, pol->max, CPUFREQ_RELATION_H);
+				cpufreq_cpu_put(pol);
+			}
+		}
+		fts_boosted = true;
+	}
+	cancel_delayed_work(&fts_boost_rel_work);
+	schedule_delayed_work(&fts_boost_rel_work, msecs_to_jiffies(120));
+}
+/* === End Touch Boost === */
+
 static irqreturn_t fts_irq_handler(int irq, void *data)
 {
 #if defined(CONFIG_PM) && FTS_PATCH_COMERR_PM
@@ -748,6 +774,7 @@ static irqreturn_t fts_irq_handler(int irq, void *data)
     }
 #endif
 
+    fts_do_boost();
     fts_irq_read_report();
     return IRQ_HANDLED;
 }
@@ -763,6 +790,9 @@ static int fts_irq_registration(struct fts_ts_data *ts_data)
     ret = request_threaded_irq(ts_data->irq, NULL, fts_irq_handler,
                                IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
                                FTS_DRIVER_NAME, ts_data);
+
+    INIT_DELAYED_WORK(&fts_boost_rel_work, fts_boost_rel_func);
+    fts_boosted = false;
 
     return ret;
 }
