@@ -4772,3 +4772,6 @@ CONFIG_SBITMAP=y
 # KUnit support
 #
 # CONFIG_TEST is not set
+
+# Required for KPM (Kernel Patch Module) support
+CONFIG_KPM=y
