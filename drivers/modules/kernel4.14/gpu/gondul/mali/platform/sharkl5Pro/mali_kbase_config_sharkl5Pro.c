@@ -410,8 +410,12 @@ static inline void mali_clock_on(void)
 	}
 	else if (!strcmp(auto_efuse, "T610"))
 	{
-		//1:T610 512M:0.7v
+		//Bypassed: T610 now uses T618 voltage gears for full performance
 		regmap_update_bits(gpu_dvfs_ctx.core_index1_map.regmap_ptr, gpu_dvfs_ctx.core_index1_map.args[0], gpu_dvfs_ctx.core_index1_map.args[1], ~gpu_dvfs_ctx.core_index1_map.args[1]);
+		regmap_update_bits(gpu_dvfs_ctx.core_index4_map.regmap_ptr, gpu_dvfs_ctx.core_index4_map.args[0], gpu_dvfs_ctx.core_index4_map.args[1], gpu_dvfs_ctx.core_index4_map.args[1]);
+		regmap_update_bits(gpu_dvfs_ctx.core_index5_map.regmap_ptr, gpu_dvfs_ctx.core_index5_map.args[0], gpu_dvfs_ctx.core_index5_map.args[1], gpu_dvfs_ctx.core_index5_map.args[1]);
+		regmap_update_bits(gpu_dvfs_ctx.core_index6_map.regmap_ptr, gpu_dvfs_ctx.core_index6_map.args[0], gpu_dvfs_ctx.core_index6_map.args[1], gpu_dvfs_ctx.core_index6_map.args[1]);
+		regmap_update_bits(gpu_dvfs_ctx.core_index7_map.regmap_ptr, gpu_dvfs_ctx.core_index7_map.args[0], gpu_dvfs_ctx.core_index7_map.args[1], gpu_dvfs_ctx.core_index7_map.args[1]);
 	}
 	else if (!strcmp(auto_efuse, "T700"))
 	{
@@ -666,8 +670,8 @@ void kbase_platform_limit_max_freq(struct device *dev)
 	char auto_efuse[HWFEATURE_STR_SIZE_LIMIT];
 
 	sprd_kproperty_get("auto/efuse", auto_efuse, "-1");
-	//0: T618 1:T610,remove 768M,850M
-	if (!strcmp(auto_efuse, "T610"))
+	//0: T618 1:T610,remove 768M,850M (Bypassed for Gaming Kernel)
+	if (0)
 	{
 		dev_pm_opp_disable(dev, gpu_dvfs_ctx.freq_list[gpu_dvfs_ctx.freq_list_len-1].freq * FREQ_KHZ);
 		dev_pm_opp_disable(dev, gpu_dvfs_ctx.freq_list[gpu_dvfs_ctx.freq_list_len-2].freq * FREQ_KHZ);

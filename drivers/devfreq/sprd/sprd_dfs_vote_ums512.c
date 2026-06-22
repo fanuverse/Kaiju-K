@@ -56,7 +56,7 @@ static struct vote_data vote_data[] =  {
 };
 
 static unsigned int freq_table[8] = {
-	256, 384, 512, 768, 1024, 1333, 1536, 1866
+	768, 768, 768, 768, 1024, 1333, 1536, 1866
 };
 
 static unsigned int freq_to_sel(unsigned int freq)

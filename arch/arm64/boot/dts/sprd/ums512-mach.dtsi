@@ -238,12 +238,12 @@
 			thermal-sensors = <&soc_sensor  17>;
 			trips {
 				soc_threshold: trip-point@0 {
-					temperature = <70000>;
+					temperature = <99000>;
 					hysteresis = <1000>;
 					type = "passive";
 				};
 				soc_target: trip-point@1 {
-					temperature = <85000>;
+					temperature = <99000>;
 					hysteresis = <1000>;
 					type = "passive";
 				};
