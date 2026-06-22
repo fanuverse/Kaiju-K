@@ -69,7 +69,7 @@ static inline struct schedtune *parent_st(struct schedtune *st)
 static struct schedtune
 root_schedtune = {
 	.boost	= 0,
-	.prefer_idle = 0,
+	.prefer_idle = 1,
 #ifdef CONFIG_SCHED_WALT
 	.account_wait_time = 0,
 	.init_task_load_pct = 0,

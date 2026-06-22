@@ -233,7 +233,7 @@
 	thm_zone: thermal-zones {
 		soc_thmzone: soc-thmzone {
 			polling-delay-passive = <100>;
-			polling-delay = <1000>;
+			polling-delay = <500>;
 			sustainable-power = <3000>;
 			thermal-sensors = <&soc_sensor  17>;
 			trips {
@@ -248,7 +248,7 @@
 					type = "passive";
 				};
 				soc_crit: soc_crit {
-					temperature = <110000>;
+					temperature = <115000>;
 					hysteresis = <2000>;
 					type = "critical";
 				};
@@ -501,7 +501,7 @@
 			sprd,cluster-base = <966>;
 			sprd,dynamic-core =
 			/*Pdynperghz*10^2    Freq     Vbase  */
-			< 7150           850     800>;
+			< 7150           900     850>;
 			sprd,dynamic-cluster =
 			/*Pdynperghz*10^2    Freq     Vbase  */
 			< 6064           768     900>;
