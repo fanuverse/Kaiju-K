@@ -271,7 +271,7 @@ static u32 bbr_tso_segs_goal(struct sock *sk)
 	 */
 	bytes = min_t(u32, sk->sk_pacing_rate >> sk->sk_pacing_shift,
 		      GSO_MAX_SIZE - 1 - MAX_TCP_HEADER);
-	segs = max_t(u32, bytes / tp->mss_cache, bbr_min_tso_segs(sk));
+	segs = max_t(u32, bytes / tp->mss_cache, sysctl_tcp_min_tso_segs);
 
 	return min(segs, 0x7FU);
 }
