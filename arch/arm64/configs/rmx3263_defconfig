@@ -4794,3 +4794,4 @@ CONFIG_SBITMAP=y
 # KUnit support
 #
 # CONFIG_TEST is not set
+CONFIG_SCHED_BORE=y
