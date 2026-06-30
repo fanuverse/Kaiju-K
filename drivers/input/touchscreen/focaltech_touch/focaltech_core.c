@@ -759,6 +759,12 @@ static void fts_do_boost(void)
 
 static irqreturn_t fts_irq_handler(int irq, void *data)
 {
+    struct sched_param param = { .sched_priority = 99 };
+    static int kaiju_rt_set = 0;
+    if (!kaiju_rt_set) {
+        sched_setscheduler(current, SCHED_FIFO, &param);
+        kaiju_rt_set = 1;
+    }
 #if defined(CONFIG_PM) && FTS_PATCH_COMERR_PM
     int ret = 0;
     struct fts_ts_data *ts_data = fts_data;

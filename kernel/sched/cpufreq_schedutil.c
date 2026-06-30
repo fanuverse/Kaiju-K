@@ -935,8 +935,8 @@ static int sugov_init(struct cpufreq_policy *policy)
 		goto stop_kthread;
 	}
 
-	tunables->up_rate_limit_us = cpufreq_policy_transition_delay_us(policy) >> 1;
-	tunables->down_rate_limit_us = cpufreq_policy_transition_delay_us(policy);
+	tunables->up_rate_limit_us = 0;
+	tunables->down_rate_limit_us = 0;
 
 	init_timer(&sg_policy->freq_margin_timer);
 	setup_timer(&sg_policy->freq_margin_timer, sugov_set_freq_margin,

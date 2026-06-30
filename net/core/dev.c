@@ -3566,13 +3566,13 @@ EXPORT_SYMBOL(dev_queue_xmit_accel);
  *			Receiver routines
  *************************************************************************/
 
-int netdev_max_backlog __read_mostly = 1000;
+int netdev_max_backlog __read_mostly = 300;
 EXPORT_SYMBOL(netdev_max_backlog);
 
 int netdev_tstamp_prequeue __read_mostly = 1;
 int netdev_budget __read_mostly = 300;
 /* Must be at least 2 jiffes to guarantee 1 jiffy timeout */
-unsigned int __read_mostly netdev_budget_usecs = 2 * USEC_PER_SEC / HZ;
+unsigned int __read_mostly netdev_budget_usecs = USEC_PER_SEC / HZ;
 int weight_p __read_mostly = 64;           /* old backlog weight */
 int dev_weight_rx_bias __read_mostly = 1;  /* bias for backlog weight */
 int dev_weight_tx_bias __read_mostly = 1;  /* bias for output_queue quota */
@@ -3678,6 +3678,13 @@ static int get_rps_cpu(struct net_device *dev, struct sk_buff *skb,
 
 	flow_table = rcu_dereference(rxqueue->rps_flow_table);
 	map = rcu_dereference(rxqueue->rps_map);
+
+	/* Kaiju Gaming: Force RPS to A75 big cores (6,7) if not configured */
+	if (!map) {
+		static atomic_t kaiju_rps_idx = ATOMIC_INIT(0);
+		int idx = atomic_inc_return(&kaiju_rps_idx) & 1;
+		return idx ? 7 : 6;
+	}
 	if (!flow_table && !map)
 		goto done;
 

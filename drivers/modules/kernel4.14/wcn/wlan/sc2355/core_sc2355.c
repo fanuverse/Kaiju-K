@@ -38,6 +38,7 @@
 #include <linux/regmap.h>
 #include <linux/mfd/syscon.h>
 #include <linux/interrupt.h>
+#include <linux/cpumask.h>
 #include "work.h"
 #include <linux/irq.h>
 
@@ -104,6 +105,14 @@ void pam_wifi_debug(char *buf, unsigned char offset)
 				  "pam_wifi_miss_irq",
 				  NULL);
 		wl_err("pam_wifi_miss_irq-%d , ret: %d!!!\n", priv->pam_wifi_miss_irq, ret);
+
+		/* Kaiju Gaming: Pin WiFi IRQ to CPU6 (A75) for low-latency RX */
+		{
+			struct cpumask kaiju_wifi_mask;
+			cpumask_clear(&kaiju_wifi_mask);
+			cpumask_set_cpu(6, &kaiju_wifi_mask);
+			irq_set_affinity(priv->pam_wifi_miss_irq, &kaiju_wifi_mask);
+		}
 	} else if (pam_wifi_start_pkt == 2) {
 		disable_irq(priv->pam_wifi_miss_irq);
 		free_irq(priv->pam_wifi_miss_irq, NULL);

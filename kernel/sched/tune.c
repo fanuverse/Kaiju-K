@@ -68,7 +68,7 @@ static inline struct schedtune *parent_st(struct schedtune *st)
  */
 static struct schedtune
 root_schedtune = {
-	.boost	= 0,
+	.boost	= 30,
 	.prefer_idle = 1,
 #ifdef CONFIG_SCHED_WALT
 	.account_wait_time = 0,
@@ -604,7 +604,7 @@ schedtune_boostgroup_init(struct schedtune *st)
 	/* Initialize the per CPU boost groups */
 	for_each_possible_cpu(cpu) {
 		bg = &per_cpu(cpu_boost_groups, cpu);
-		bg->group[st->idx].boost = 0;
+		bg->group[st->idx].boost = 30;
 		bg->group[st->idx].tasks = 0;
 		bg->group[st->idx].ts = 0;
 	}

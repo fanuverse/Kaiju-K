@@ -25,6 +25,7 @@
 #include <backend/gpu/mali_kbase_irq_internal.h>
 
 #include <linux/interrupt.h>
+#include <linux/cpumask.h>
 
 #if !defined(CONFIG_MALI_NO_MALI)
 
@@ -447,6 +448,14 @@ int kbase_install_interrupts(struct kbase_device *kbdev)
 				kbdev->irqs[i].flags | IRQF_SHARED,
 				dev_name(kbdev->dev),
 				kbase_tag(kbdev, i));
+
+		if (!err) {
+			/* Kaiju Gaming: Pin GPU IRQ to CPU6 (A75) for instant frame delivery */
+			struct cpumask kaiju_gpu_mask;
+			cpumask_clear(&kaiju_gpu_mask);
+			cpumask_set_cpu(6, &kaiju_gpu_mask);
+			irq_set_affinity(kbdev->irqs[i].irq, &kaiju_gpu_mask);
+		}
 		if (err) {
 			dev_err(kbdev->dev, "Can't request interrupt %d (index %d)\n",
 							kbdev->irqs[i].irq, i);
