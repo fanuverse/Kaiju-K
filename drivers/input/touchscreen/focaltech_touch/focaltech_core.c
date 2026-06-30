@@ -1,3 +1,4 @@
+#include <linux/sched/types.h>
 /*
  *
  * FocalTech TouchScreen driver.
